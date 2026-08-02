@@ -100,7 +100,7 @@ export default function Home() {
             {services.map((service) => (
               <div
                 key={service.title}
-                className="border border-foreground/15 border-l-4 border-l-gold bg-background p-6 transition-colors hover:border-foreground/30 hover:border-l-gold"
+                className="border border-foreground/15 border-l-4 border-l-gold p-6 transition-colors hover:border-foreground/30 hover:border-l-gold"
               >
                 <h3 className="font-heading text-xl font-bold uppercase tracking-wide">
                   {service.title}
