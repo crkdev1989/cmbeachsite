@@ -88,12 +88,7 @@ export default function Contact() {
 
         {/* Contact form */}
         <div className="mt-6 border-[3px] border-foreground/15 border-l-[3px] border-l-gold bg-[#F5F2E8]/75 p-8 sm:p-10">
-          <h2 className="font-heading text-xl font-bold uppercase tracking-wide">
-            Send a Message
-          </h2>
-          <div className="mt-6">
-            <ContactForm />
-          </div>
+          <ContactForm />
         </div>
       </div>
     </main>

@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
+import { submitContact, type ContactFormState } from "@/app/contact/actions";
 
-const services = [
+const projectTypes = [
   "Mass Grading",
   "Fine Grading",
   "Site Utilities",
@@ -18,30 +20,43 @@ const fieldClasses =
 const labelClasses =
   "block text-xs font-semibold uppercase tracking-wide text-sage";
 
+const initialState: ContactFormState = { status: "idle" };
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="inline-block border-2 border-foreground bg-foreground px-8 py-3 font-heading text-lg font-bold uppercase tracking-wide text-gold transition-colors hover:bg-transparent hover:text-foreground disabled:opacity-60"
+    >
+      {pending ? "Sending..." : "Send Message"}
+    </button>
+  );
+}
+
 export default function ContactForm() {
-  const [sent, setSent] = useState(false);
+  const [state, formAction] = useActionState(submitContact, initialState);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    const name = data.get("name");
-    const phone = data.get("phone");
-    const email = data.get("email");
-    const service = data.get("service");
-    const message = data.get("message");
-
-    const subject = `Website inquiry from ${name} — ${service}`;
-    const body = `Name: ${name}\nPhone: ${phone}\nEmail: ${email}\nProject type: ${service}\n\n${message}`;
-
-    window.location.href = `mailto:samantha@cmbeach.com?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(body)}`;
-
-    setSent(true);
+  if (state.status === "success") {
+    return (
+      <div className="text-center">
+        <h2 className="font-heading text-xl font-bold uppercase tracking-wide">
+          Message Sent
+        </h2>
+        <p className="mt-3 text-foreground/70">
+          Thanks for reaching out. We&rsquo;ll be in touch shortly.
+        </p>
+      </div>
+    );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <form action={formAction} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <h2 className="font-heading text-xl font-bold uppercase tracking-wide sm:col-span-2">
+        Send a Message
+      </h2>
+
       <label className="block">
         <span className={labelClasses}>Name</span>
         <input type="text" name="name" required className={fieldClasses} />
@@ -59,13 +74,18 @@ export default function ContactForm() {
 
       <label className="block">
         <span className={labelClasses}>Project Type / Service Needed</span>
-        <select name="service" required className={fieldClasses} defaultValue="">
+        <select
+          name="projectType"
+          required
+          className={fieldClasses}
+          defaultValue=""
+        >
           <option value="" disabled>
             Select a service
           </option>
-          {services.map((service) => (
-            <option key={service} value={service}>
-              {service}
+          {projectTypes.map((type) => (
+            <option key={type} value={type}>
+              {type}
             </option>
           ))}
         </select>
@@ -73,26 +93,20 @@ export default function ContactForm() {
 
       <label className="block sm:col-span-2">
         <span className={labelClasses}>Message</span>
-        <textarea
-          name="message"
-          required
-          rows={5}
-          className={fieldClasses}
-        />
+        <textarea name="message" required rows={5} className={fieldClasses} />
       </label>
 
-      <div className="sm:col-span-2">
-        <button
-          type="submit"
-          className="inline-block border-2 border-foreground bg-foreground px-8 py-3 font-heading text-lg font-bold uppercase tracking-wide text-gold transition-colors hover:bg-transparent hover:text-foreground"
+      {state.status === "error" && state.message && (
+        <p
+          className="text-sm font-semibold text-red-800 sm:col-span-2"
+          role="alert"
         >
-          Send Message
-        </button>
-        <p className="mt-3 text-sm text-foreground/60">
-          Submitting opens your email client with this message pre-filled,
-          addressed to samantha@cmbeach.com.
-          {sent && " Your email client should be open now."}
+          {state.message}
         </p>
+      )}
+
+      <div className="sm:col-span-2">
+        <SubmitButton />
       </div>
     </form>
   );

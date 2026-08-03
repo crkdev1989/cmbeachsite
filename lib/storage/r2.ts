@@ -1,4 +1,9 @@
-import { S3Client, DeleteObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import {
+  S3Client,
+  DeleteObjectCommand,
+  GetObjectCommand,
+  PutObjectCommand,
+} from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 // All of this is lazily created on first actual use, not at import time.
@@ -58,6 +63,40 @@ export function getPresignedUploadUrl(
 export function deleteObject(key: string) {
   const { client, bucket } = getClient();
   return client.send(new DeleteObjectCommand({ Bucket: bucket, Key: key }));
+}
+
+/**
+ * Uploads a file directly from a Next.js server (Server Action / API
+ * route), for cases where routing through the server is simpler than a
+ * presigned-PUT-from-browser flow (e.g. avoids needing CORS configured on
+ * the bucket for a single small file like a resume upload).
+ */
+export async function uploadObject(
+  key: string,
+  body: Buffer | Uint8Array,
+  contentType: string,
+) {
+  const { client, bucket } = getClient();
+  await client.send(
+    new PutObjectCommand({
+      Bucket: bucket,
+      Key: key,
+      Body: body,
+      ContentType: contentType,
+    }),
+  );
+  return key;
+}
+
+/**
+ * Returns a time-limited URL to download a private object. Use this for
+ * anything containing personal information (e.g. resumes) instead of
+ * getPublicUrl, so files aren't permanently world-readable.
+ */
+export function getPresignedDownloadUrl(key: string, expiresInSeconds = 604800) {
+  const { client, bucket } = getClient();
+  const command = new GetObjectCommand({ Bucket: bucket, Key: key });
+  return getSignedUrl(client, command, { expiresIn: expiresInSeconds });
 }
 
 /**

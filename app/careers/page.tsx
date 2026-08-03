@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ApplicationForm from "./ApplicationForm";
 
 export const metadata: Metadata = {
   title: "Careers | C.M. Beach Sitework",
@@ -24,30 +25,8 @@ export default function Careers() {
       </div>
 
       <div className="mx-auto mt-12 w-full max-w-2xl">
-        {/* Application placeholder — swap this card's contents for an embedded
-            form or file-upload component when the application flow is ready. */}
-        <div className="border-[3px] border-foreground/15 border-l-[3px] border-l-gold bg-[#F5F2E8]/75 p-8 text-center sm:p-10">
-          <h2 className="font-heading text-xl font-bold uppercase tracking-wide">
-            Apply
-          </h2>
-          <p className="mt-3 text-foreground/70">
-            Application form coming soon. In the meantime, send your resume
-            to{" "}
-            <a
-              href="mailto:samantha@cmbeach.com"
-              className="font-semibold text-gold underline decoration-gold underline-offset-2 hover:opacity-80"
-            >
-              samantha@cmbeach.com
-            </a>{" "}
-            or call{" "}
-            <a
-              href="tel:302-228-8789"
-              className="font-semibold text-gold underline decoration-gold underline-offset-2 hover:opacity-80"
-            >
-              302-228-8789
-            </a>
-            .
-          </p>
+        <div className="border-[3px] border-foreground/15 border-l-[3px] border-l-gold bg-[#F5F2E8]/75 p-8 sm:p-10">
+          <ApplicationForm />
         </div>
       </div>
 

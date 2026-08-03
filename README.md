@@ -42,13 +42,32 @@ the box; you need to do the following once:
 5. **Create your login:** `npm run create-admin` — you'll be prompted for
    name, email, and password interactively. Nothing is hardcoded in the
    repo; the password is hashed with bcrypt before it touches the database.
+6. **Sign up for Resend** (resend.com), verify a sending domain, and create
+   an API key. Set `RESEND_API_KEY` and `RESEND_FROM_EMAIL` in `.env`. This
+   powers the notification email sent to samantha@cmbeach.com whenever
+   someone submits the `/careers` job application form. Without this set,
+   applications still save to the database fine — only the email
+   notification is skipped (it fails silently and logs a server error, so
+   an applicant never sees a broken submission over a missing email config).
 
 After that, `/admin/login` will authenticate against that account and
 `/admin` requires a signed-in session (unauthenticated visits redirect to
 the login page). Whichever host runs this app in production needs the same
-four env vars (`DATABASE_URL`, `AUTH_SECRET`, and the `R2_*` vars) set in
-its environment — none of them are Vercel-specific, so moving hosts later
-is just re-pointing these values.
+env vars (`DATABASE_URL`, `AUTH_SECRET`, the `R2_*` vars, and
+`RESEND_API_KEY`/`RESEND_FROM_EMAIL`) set in its environment — none of them
+are Vercel-specific, so moving hosts later is just re-pointing these values.
+
+### Careers application resumes
+
+Resumes uploaded through `/careers` go to the same R2 bucket as everything
+else, under an `applications/` prefix, and are stored **privately** — the
+`applications.resume_url` database column actually holds the R2 object key,
+not a public link. Both the notification email and any future admin
+review UI should call `getPresignedDownloadUrl()` from
+`lib/storage/r2.ts` to generate a fresh, time-limited link (currently 7
+days) rather than treating that column as a permanent URL. This is
+deliberate — resumes contain applicants' personal information, so nothing
+here is world-readable by default.
 
 ## Learn More
 
