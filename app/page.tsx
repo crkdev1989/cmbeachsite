@@ -126,19 +126,24 @@ export default function Home() {
         <h2 className="font-heading text-2xl font-bold uppercase tracking-wide text-foreground sm:text-3xl">
           Get an estimate.
         </h2>
-        <div className="mt-6 flex flex-col justify-center gap-4 sm:flex-row">
+        <div className="mt-6 flex flex-col justify-center gap-4 sm:flex-row sm:items-start">
           <a
             href="tel:302-228-8789"
             className="inline-block border-2 border-foreground bg-foreground px-8 py-3 font-heading text-lg font-bold uppercase tracking-wide text-gold transition-colors hover:bg-transparent hover:text-foreground"
           >
             Call 302-228-8789
           </a>
-          <a
-            href="mailto:samantha@cmbeach.com"
-            className="inline-block border-2 border-foreground bg-foreground px-8 py-3 font-heading text-lg font-bold uppercase tracking-wide text-gold transition-colors hover:bg-transparent hover:text-foreground"
-          >
-            Email Us
-          </a>
+          <div className="flex flex-col gap-2">
+            <a
+              href="mailto:samantha@cmbeach.com"
+              className="inline-block border-2 border-foreground bg-foreground px-8 py-3 font-heading text-lg font-bold uppercase tracking-wide text-gold transition-colors hover:bg-transparent hover:text-foreground"
+            >
+              Email Us
+            </a>
+            <span className="text-sm text-foreground/70">
+              samantha@cmbeach.com
+            </span>
+          </div>
         </div>
       </section>
     </main>
