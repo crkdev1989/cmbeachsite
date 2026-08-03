@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  --background: #b39b78;
-  --background-gradient-start: #c9bea6;
-  --background-gradient-mid: #b39b78;
-  --background-gradient-end: #8c7355;
+  --background: #8b8c6a;
+  --background-gradient-start: #a8a585;
+  --background-gradient-mid: #8b8c6a;
+  --background-gradient-end: #6b6e4f;
   --foreground: #0a0a0a;
   --gold: #d4a017;
   --sage: #6b7355;
@@ -23,10 +23,10 @@ body {
   background:
     repeating-linear-gradient(
       135deg,
-      rgba(0, 0, 0, 0.06) 0px,
-      rgba(0, 0, 0, 0.06) 3px,
-      rgba(255, 255, 255, 0.05) 3px,
-      rgba(255, 255, 255, 0.05) 6px
+      rgba(0, 0, 0, 0.02) 0px,
+      rgba(0, 0, 0, 0.02) 3px,
+      rgba(255, 255, 255, 0.018) 3px,
+      rgba(255, 255, 255, 0.018) 6px
     ),
     linear-gradient(
       135deg,
