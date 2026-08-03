@@ -19,17 +19,13 @@ export default function Nav() {
   return (
     <header className="border-b-[3px] border-gold bg-slate px-6 py-4">
       <nav className="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
-        <Link
-          href="/"
-          aria-label="C.M. Beach Sitework home"
-          className="bg-[#F5F2E8] px-2 py-1"
-        >
+        <Link href="/" aria-label="C.M. Beach Sitework home">
           <Image
             src="/CMBeachlogo-nav.png"
             alt="C.M. Beach Sitework"
             width={784}
             height={370}
-            className="h-12 w-auto"
+            className="h-14 w-auto"
           />
         </Link>
         {links.map((link) => {
