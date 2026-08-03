@@ -6,7 +6,7 @@ const badges = [
   "Serving Delaware and Maryland's Eastern Shore",
 ];
 
-const photos = ["Project Photo 1", "Project Photo 2", "Project Photo 3"];
+const photos = ["/photo-1.jpg", "/photo-2.jpg", "/photo-3.jpg"];
 
 const services = [
   {
@@ -78,14 +78,20 @@ export default function Home() {
       {/* Photos */}
       <section className="border-y border-foreground/10">
         <div className="mx-auto grid max-w-5xl grid-cols-1 sm:grid-cols-3">
-          {photos.map((label, i) => (
+          {photos.map((src, i) => (
             <div
-              key={label}
-              className={`flex aspect-video items-center justify-center border-foreground/10 text-xs font-semibold uppercase tracking-widest text-foreground/60 sm:text-sm ${
+              key={src}
+              className={`relative aspect-video border-foreground/10 ${
                 i > 0 ? "border-t sm:border-t-0 sm:border-l" : ""
               }`}
             >
-              {label}
+              <Image
+                src={src}
+                alt="C.M. Beach Sitework project photo"
+                fill
+                sizes="(min-width: 640px) 33vw, 100vw"
+                className="object-cover"
+              />
             </div>
           ))}
         </div>
