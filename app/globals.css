@@ -37,3 +37,20 @@ body {
   color: var(--foreground);
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
 }
+
+@keyframes logo-reveal {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .animate-logo-reveal {
+    animation: logo-reveal 550ms ease-out both;
+  }
+}

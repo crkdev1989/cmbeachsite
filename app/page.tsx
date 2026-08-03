@@ -48,7 +48,7 @@ export default function Home() {
           width={400}
           height={300}
           priority
-          className="drop-shadow-[0_2px_10px_rgba(0,0,0,0.25)]"
+          className="animate-logo-reveal drop-shadow-[0_2px_10px_rgba(0,0,0,0.25)]"
         />
         <h1 className="mt-8 font-heading text-4xl font-bold uppercase tracking-wide sm:text-5xl md:text-6xl">
           C.M. Beach Sitework
@@ -107,7 +107,7 @@ export default function Home() {
             {services.map((service) => (
               <div
                 key={service.title}
-                className="border-[3px] border-foreground/15 border-l-[3px] border-l-gold bg-[#F5F2E8]/75 p-6 transition-colors hover:border-foreground/30 hover:border-l-gold"
+                className="border-[3px] border-foreground/15 border-l-[3px] border-l-gold bg-[#F5F2E8]/75 p-6 transition-all duration-200 ease-out hover:border-foreground/30 hover:border-l-[4px] hover:shadow-[0_10px_20px_-6px_rgba(10,10,10,0.3)] motion-safe:hover:-translate-y-1"
               >
                 <h3 className="font-heading text-xl font-bold uppercase tracking-wide">
                   {service.title}
