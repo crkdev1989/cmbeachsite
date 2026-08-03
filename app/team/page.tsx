@@ -54,7 +54,7 @@ export default function Team() {
             return (
               <div key={member.name} className="grid grid-cols-1 sm:grid-cols-2">
                 <div
-                  className={`relative min-h-[280px] overflow-hidden ${
+                  className={`relative aspect-[4/5] self-start overflow-hidden ${
                     photoRight ? "sm:order-2" : "sm:order-1"
                   }`}
                 >
@@ -63,7 +63,7 @@ export default function Team() {
                     alt={`${member.name}, ${member.title} at C.M. Beach Sitework`}
                     fill
                     sizes="(min-width: 640px) 50vw, 100vw"
-                    className="object-cover"
+                    className="object-cover object-top"
                   />
                 </div>
                 <div
