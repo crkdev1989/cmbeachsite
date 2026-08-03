@@ -61,7 +61,7 @@ export default function Home() {
           {badges.map((badge) => (
             <span
               key={badge}
-              className="border-2 border-gold bg-[#F5F4F0]/90 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-sage sm:text-sm"
+              className="rounded-full border border-gold/40 bg-[#F5F4F0]/65 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-sage sm:text-sm"
             >
               {badge}
             </span>

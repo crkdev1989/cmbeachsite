@@ -17,7 +17,7 @@ export default function Nav() {
   const pathname = usePathname();
 
   return (
-    <header className="border-b border-gold/40 px-6 py-4">
+    <header className="border-b-[3px] border-gold bg-foreground/90 px-6 py-4">
       <nav className="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
         <Link href="/" aria-label="C.M. Beach Sitework home">
           <Image
@@ -35,7 +35,9 @@ export default function Nav() {
               key={link.href}
               href={link.href}
               className={`font-heading text-sm font-semibold uppercase tracking-wide transition-colors hover:text-gold ${
-                active ? "text-gold" : "text-foreground"
+                active
+                  ? "text-gold underline decoration-2 underline-offset-4"
+                  : "text-[#F5F2E8]"
               }`}
             >
               {link.label}
