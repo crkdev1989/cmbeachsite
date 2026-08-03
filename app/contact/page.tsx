@@ -66,72 +66,23 @@ export default function Contact() {
             </dl>
           </div>
 
-          {/* Service area graphic */}
+          {/* Service area map */}
           <div className="border-[3px] border-foreground/15 border-l-[3px] border-l-gold bg-[#F5F2E8]/75 p-8 text-center sm:p-10">
             <h2 className="font-heading text-xl font-bold uppercase tracking-wide">
               Where We Work
             </h2>
-            <svg
-              viewBox="0 0 200 260"
-              role="img"
-              aria-label="Illustrative map of the C.M. Beach Sitework service area, covering Delaware and Maryland's Eastern Shore"
-              className="mx-auto mt-6 w-full max-w-[220px]"
-            >
-              <polygon
-                points="60,10 140,10 150,40 145,90 160,120 150,160 130,200 110,230 95,250 80,230 70,190 55,150 45,100 50,50"
-                fill="rgba(10,10,10,0.05)"
-                stroke="#D4A017"
-                strokeWidth="3"
-              />
-              <circle
-                cx="100"
-                cy="120"
-                r="95"
-                fill="none"
-                stroke="#D4A017"
-                strokeWidth="1.5"
-                strokeDasharray="6 6"
-                opacity="0.6"
-              />
-              <circle cx="95" cy="55" r="3.5" fill="#0A0A0A" />
-              <circle cx="90" cy="190" r="3.5" fill="#0A0A0A" />
-              <text
-                x="100"
-                y="35"
-                textAnchor="middle"
-                fontSize="11"
-                fontWeight="700"
-                letterSpacing="0.5"
-                fill="#0A0A0A"
-              >
-                DELAWARE
-              </text>
-              <text
-                x="100"
-                y="215"
-                textAnchor="middle"
-                fontSize="9"
-                fontWeight="700"
-                letterSpacing="0.3"
-                fill="#0A0A0A"
-              >
-                MD EASTERN
-              </text>
-              <text
-                x="100"
-                y="227"
-                textAnchor="middle"
-                fontSize="9"
-                fontWeight="700"
-                letterSpacing="0.3"
-                fill="#0A0A0A"
-              >
-                SHORE
-              </text>
-            </svg>
-            <p className="mt-4 text-sm text-foreground/60">
-              Illustrative coverage area — not a literal map.
+            <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-sage">
+              Serving Delaware and Maryland&rsquo;s Eastern Shore.
             </p>
+            <div className="relative mt-6 aspect-[4/3] w-full overflow-hidden border-[3px] border-gold">
+              <iframe
+                src="https://www.google.com/maps?q=38.76,-75.56&z=7&output=embed"
+                title="Map of C.M. Beach Sitework's service area covering Delaware and Maryland's Eastern Shore"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="absolute inset-0 h-full w-full border-0"
+              />
+            </div>
           </div>
         </div>
 
