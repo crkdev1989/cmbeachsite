@@ -48,6 +48,7 @@ export default function Home() {
           width={400}
           height={300}
           priority
+          className="drop-shadow-[0_2px_10px_rgba(0,0,0,0.25)]"
         />
         <h1 className="mt-8 font-heading text-4xl font-bold uppercase tracking-wide sm:text-5xl md:text-6xl">
           C.M. Beach Sitework
@@ -60,7 +61,7 @@ export default function Home() {
           {badges.map((badge) => (
             <span
               key={badge}
-              className="border border-gold px-4 py-2 text-xs font-semibold uppercase tracking-wide text-sage sm:text-sm"
+              className="border-2 border-gold bg-[#F5F4F0]/90 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-sage sm:text-sm"
             >
               {badge}
             </span>
@@ -80,7 +81,7 @@ export default function Home() {
           {photos.map((label, i) => (
             <div
               key={label}
-              className={`flex aspect-video items-center justify-center border-foreground/10 bg-foreground/5 text-xs font-semibold uppercase tracking-widest text-foreground/40 sm:text-sm ${
+              className={`flex aspect-video items-center justify-center border-foreground/10 bg-foreground/10 text-xs font-semibold uppercase tracking-widest text-foreground/60 sm:text-sm ${
                 i > 0 ? "border-t sm:border-t-0 sm:border-l" : ""
               }`}
             >
@@ -136,7 +137,7 @@ export default function Home() {
             href="https://crkdev.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gold hover:underline"
+            className="font-semibold text-gold underline decoration-gold underline-offset-2 hover:opacity-80"
           >
             CRK Dev
           </a>
