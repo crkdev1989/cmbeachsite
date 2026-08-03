@@ -110,3 +110,34 @@ export function getPublicUrl(key: string) {
   }
   return `${base.replace(/\/$/, "")}/${key}`;
 }
+
+/**
+ * Reverses getPublicUrl — recovers the R2 object key from a URL that was
+ * built from it, so a stored gallery media URL can be turned back into a
+ * key for deletion.
+ */
+export function getKeyFromPublicUrl(url: string) {
+  const base = process.env.R2_PUBLIC_URL;
+  if (!base) {
+    throw new Error("R2_PUBLIC_URL is not set. See .env.example.");
+  }
+  const prefix = `${base.replace(/\/$/, "")}/`;
+  return url.startsWith(prefix) ? url.slice(prefix.length) : url;
+}
+
+/**
+ * Downloads an object's full contents into memory. Used for server-side
+ * post-processing (e.g. HEIC-to-JPEG conversion) where the file needs to
+ * be read back after an initial direct-to-R2 upload.
+ */
+export async function downloadObject(key: string): Promise<Buffer> {
+  const { client, bucket } = getClient();
+  const result = await client.send(
+    new GetObjectCommand({ Bucket: bucket, Key: key }),
+  );
+  const byteArray = await result.Body?.transformToByteArray();
+  if (!byteArray) {
+    throw new Error(`R2 object not found or empty: ${key}`);
+  }
+  return Buffer.from(byteArray);
+}

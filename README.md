@@ -69,6 +69,49 @@ days) rather than treating that column as a permanent URL. This is
 deliberate — resumes contain applicants' personal information, so nothing
 here is world-readable by default.
 
+### Gallery job/media admin (`/admin/jobs`)
+
+This is the opposite privacy situation from resumes: job photos and videos
+are meant to end up on a public gallery page, so `media.storage_url` stores
+a real, permanent public URL (via `getPublicUrl()`), not a private key.
+Two things this requires that weren't needed before:
+
+1. **`R2_PUBLIC_URL` is now required, not optional.** Set it to the
+   bucket's r2.dev URL or a custom domain you've attached to it (Cloudflare
+   dashboard → your R2 bucket → Settings → Public Access), otherwise
+   uploaded media won't have a working URL to display anywhere.
+2. **CORS must be enabled on the bucket.** Uploads go straight from the
+   admin's browser to R2 via a presigned URL (not proxied through the
+   server — video files are routinely far larger than a server function's
+   request body can carry), which means the browser is making cross-origin
+   `PUT` requests directly to R2. In the Cloudflare dashboard, go to the
+   bucket → Settings → CORS Policy, and allow `PUT` (and `GET`) from
+   whatever origin(s) the admin is used from (your production domain, plus
+   `http://localhost:3000` for local dev). Without this, uploads will fail
+   in the browser with a CORS error even though credentials are otherwise
+   correct.
+
+Two things I deliberately simplified for this step, both flagged in the
+task itself as OK to punt on if they added disproportionate complexity:
+
+- **Video thumbnails aren't generated.** Doing this properly needs ffmpeg,
+  which isn't something a standard Vercel serverless function has
+  available without bundling a large binary — a real added dependency for
+  uncertain payoff at this stage. Videos show a placeholder play-icon tile
+  in the admin UI instead. `media.thumbnail_url` stays nullable in the
+  schema specifically so this can be filled in later (e.g. a background
+  job, or Cloudflare Stream) without a migration.
+- **HEIC conversion uses `heic-convert`, not `sharp`.** The `sharp`/`libvips`
+  build in this environment only decodes AVIF, not real iPhone HEIC (HEIC
+  uses the patent-encumbered HEVC codec, which prebuilt sharp binaries
+  exclude for licensing reasons) — confirmed by inspecting `sharp.format`
+  directly rather than assuming. `heic-convert` is a small WASM-based
+  decoder built specifically for this gap. I could not fully test this
+  against a real .heic photo in this environment (no way to generate a
+  valid HEIC fixture without a real encoder) — the integration is correct
+  per the library's documented API, but it's worth uploading one real
+  iPhone photo as a smoke test before relying on it.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

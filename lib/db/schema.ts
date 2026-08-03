@@ -33,7 +33,7 @@ export const jobCategoryEnum = pgEnum("job_category", [
 export const jobs = pgTable("jobs", {
   id: uuid("id").primaryKey().defaultRandom(),
   title: varchar("title", { length: 255 }).notNull(),
-  description: text("description").notNull(),
+  description: text("description"),
   category: jobCategoryEnum("category").notNull(),
   location: text("location"),
   jobDate: date("job_date").notNull(),
