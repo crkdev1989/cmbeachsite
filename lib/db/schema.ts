@@ -8,6 +8,7 @@ import {
   integer,
   boolean,
   timestamp,
+  primaryKey,
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -34,7 +35,6 @@ export const jobs = pgTable("jobs", {
   id: uuid("id").primaryKey().defaultRandom(),
   title: varchar("title", { length: 255 }).notNull(),
   description: text("description"),
-  category: jobCategoryEnum("category").notNull(),
   location: text("location"),
   jobDate: date("job_date").notNull(),
   createdBy: uuid("created_by")
@@ -44,6 +44,20 @@ export const jobs = pgTable("jobs", {
     .notNull()
     .defaultNow(),
 });
+
+// Many-to-many: a job can carry several categories (e.g. both "Demolition"
+// and "Site Utilities"). Composite PK doubles as the uniqueness constraint
+// so the same category can't be attached to a job twice.
+export const jobCategories = pgTable(
+  "job_categories",
+  {
+    jobId: uuid("job_id")
+      .notNull()
+      .references(() => jobs.id, { onDelete: "cascade" }),
+    category: jobCategoryEnum("category").notNull(),
+  },
+  (table) => [primaryKey({ columns: [table.jobId, table.category] })],
+);
 
 export const mediaTypeEnum = pgEnum("media_type", ["photo", "video"]);
 

@@ -16,7 +16,7 @@ const initialState: JobFormState = { status: "idle" };
 export type JobFormDefaults = {
   title: string;
   description: string | null;
-  category: string;
+  categories: string[];
   location: string | null;
   jobDate: string;
 };
@@ -58,24 +58,26 @@ export default function JobForm({
         />
       </label>
 
-      <label className="block">
-        <span className={labelClasses}>Category</span>
-        <select
-          name="category"
-          required
-          defaultValue={defaultValues?.category ?? ""}
-          className={fieldClasses}
-        >
-          <option value="" disabled>
-            Select a category
-          </option>
+      <div className="block sm:col-span-2">
+        <span className={labelClasses}>Categories (select all that apply)</span>
+        <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
           {JOB_CATEGORIES.map((category) => (
-            <option key={category} value={category}>
+            <label
+              key={category}
+              className="flex items-center gap-2 border border-foreground/20 bg-[#F5F4F0] px-2 py-2 text-sm"
+            >
+              <input
+                type="checkbox"
+                name="categories"
+                value={category}
+                defaultChecked={defaultValues?.categories.includes(category)}
+                className="h-4 w-4 accent-gold"
+              />
               {category}
-            </option>
+            </label>
           ))}
-        </select>
-      </label>
+        </div>
+      </div>
 
       <label className="block">
         <span className={labelClasses}>Job Date</span>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import VideoPlaceholderIcon from "@/components/VideoPlaceholderIcon";
 import {
   requestMediaUploadUrl,
   finalizeMediaUpload,
@@ -12,15 +13,6 @@ import {
 
 function byOrder(a: MediaItem, b: MediaItem) {
   return a.displayOrder - b.displayOrder;
-}
-
-function VideoPlaceholderIcon() {
-  return (
-    <svg viewBox="0 0 48 48" className="h-10 w-10" aria-hidden="true">
-      <circle cx="24" cy="24" r="22" fill="none" stroke="#0A0A0A" strokeWidth="2" />
-      <polygon points="19,15 34,24 19,33" fill="#0A0A0A" />
-    </svg>
-  );
 }
 
 export default function MediaManager({

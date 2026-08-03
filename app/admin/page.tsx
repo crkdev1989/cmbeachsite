@@ -4,6 +4,8 @@ import { desc } from "drizzle-orm";
 import { auth, signOut } from "@/auth";
 import { db } from "@/lib/db";
 import { jobs, media } from "@/lib/db/schema";
+import { getAllCategoriesGrouped } from "@/lib/jobs";
+import CategoryBadge from "@/components/CategoryBadge";
 
 export const metadata: Metadata = {
   title: "Admin | C.M. Beach Sitework",
@@ -24,6 +26,7 @@ export default async function AdminPage() {
 
   const allJobs = await db.select().from(jobs).orderBy(desc(jobs.jobDate));
   const allMedia = await db.select().from(media);
+  const categoriesByJob = await getAllCategoriesGrouped();
 
   const mediaByJob = new Map<string, typeof allMedia>();
   for (const item of allMedia) {
@@ -115,8 +118,13 @@ export default async function AdminPage() {
                       {job.title}
                     </p>
                     <p className="text-sm text-foreground/70">
-                      {job.category} &middot; {formatDate(job.jobDate)}
+                      {formatDate(job.jobDate)}
                     </p>
+                    <div className="mt-1 flex flex-wrap gap-1">
+                      {(categoriesByJob.get(job.id) ?? []).map((category) => (
+                        <CategoryBadge key={category} category={category} />
+                      ))}
+                    </div>
                   </div>
 
                   <div className="flex-shrink-0 text-right text-sm text-foreground/60">

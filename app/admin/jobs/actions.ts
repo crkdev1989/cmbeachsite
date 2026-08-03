@@ -9,6 +9,7 @@ import { db } from "@/lib/db";
 import { jobs, media } from "@/lib/db/schema";
 import { requireAdmin } from "@/lib/require-admin";
 import { isJobCategory } from "@/lib/constants";
+import { syncJobCategories } from "@/lib/jobs";
 import {
   getPresignedUploadUrl,
   getPublicUrl,
@@ -28,15 +29,16 @@ export type MediaItem = typeof media.$inferSelect;
 function readJobFields(formData: FormData) {
   const title = formData.get("title");
   const description = formData.get("description");
-  const category = formData.get("category");
+  const categories = formData.getAll("categories").filter(
+    (value): value is string => typeof value === "string" && isJobCategory(value),
+  );
   const location = formData.get("location");
   const jobDate = formData.get("jobDate");
 
   if (
     typeof title !== "string" ||
     !title.trim() ||
-    typeof category !== "string" ||
-    !isJobCategory(category) ||
+    categories.length === 0 ||
     typeof jobDate !== "string" ||
     !jobDate.trim()
   ) {
@@ -49,7 +51,7 @@ function readJobFields(formData: FormData) {
       typeof description === "string" && description.trim()
         ? description.trim()
         : null,
-    category,
+    categories,
     location:
       typeof location === "string" && location.trim()
         ? location.trim()
@@ -69,13 +71,16 @@ export async function createJob(
     return { status: "error", message: "Please fill in all required fields." };
   }
 
+  const { categories, ...jobFields } = fields;
+
   let newJobId: string;
   try {
     const [created] = await db
       .insert(jobs)
-      .values({ ...fields, createdBy: user.id })
+      .values({ ...jobFields, createdBy: user.id })
       .returning({ id: jobs.id });
     newJobId = created.id;
+    await syncJobCategories(newJobId, categories);
   } catch (error) {
     console.error("Failed to create job:", error);
     return {
@@ -85,6 +90,7 @@ export async function createJob(
   }
 
   revalidatePath("/admin");
+  revalidatePath("/gallery");
   redirect(`/admin/jobs/${newJobId}`);
 }
 
@@ -100,8 +106,11 @@ export async function updateJob(
     return { status: "error", message: "Please fill in all required fields." };
   }
 
+  const { categories, ...jobFields } = fields;
+
   try {
-    await db.update(jobs).set(fields).where(eq(jobs.id, jobId));
+    await db.update(jobs).set(jobFields).where(eq(jobs.id, jobId));
+    await syncJobCategories(jobId, categories);
   } catch (error) {
     console.error("Failed to update job:", error);
     return {
@@ -112,6 +121,8 @@ export async function updateJob(
 
   revalidatePath("/admin");
   revalidatePath(`/admin/jobs/${jobId}`);
+  revalidatePath("/gallery");
+  revalidatePath(`/gallery/${jobId}`);
   return { status: "success" };
 }
 
@@ -139,6 +150,8 @@ export async function deleteJob(jobId: string) {
   await db.delete(jobs).where(eq(jobs.id, jobId));
 
   revalidatePath("/admin");
+  revalidatePath("/gallery");
+  revalidatePath(`/gallery/${jobId}`);
   redirect("/admin");
 }
 
@@ -297,6 +310,8 @@ export async function finalizeMediaUpload(
       .returning();
 
     revalidatePath(`/admin/jobs/${jobId}`);
+    revalidatePath("/gallery");
+    revalidatePath(`/gallery/${jobId}`);
     return { ok: true, media: inserted };
   } catch (error) {
     console.error("Failed to save media row:", error);
@@ -317,6 +332,7 @@ export async function updateMediaCaption(mediaId: string, caption: string) {
     .returning({ jobId: media.jobId });
   if (updated) {
     revalidatePath(`/admin/jobs/${updated.jobId}`);
+    revalidatePath(`/gallery/${updated.jobId}`);
   }
 }
 
@@ -338,6 +354,8 @@ export async function deleteMedia(mediaId: string) {
 
   await db.delete(media).where(eq(media.id, mediaId));
   revalidatePath(`/admin/jobs/${item.jobId}`);
+  revalidatePath("/gallery");
+  revalidatePath(`/gallery/${item.jobId}`);
 }
 
 export async function moveMedia(
@@ -370,4 +388,6 @@ export async function moveMedia(
     .where(eq(media.id, b.id));
 
   revalidatePath(`/admin/jobs/${jobId}`);
+  revalidatePath("/gallery");
+  revalidatePath(`/gallery/${jobId}`);
 }

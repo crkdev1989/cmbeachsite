@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { eq, asc } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { jobs, media } from "@/lib/db/schema";
+import { getCategoriesForJob } from "@/lib/jobs";
 import JobForm from "../JobForm";
 import { updateJob } from "../actions";
 import MediaManager from "./MediaManager";
@@ -31,6 +32,8 @@ export default async function EditJobPage({
     .from(media)
     .where(eq(media.jobId, id))
     .orderBy(asc(media.displayOrder));
+
+  const jobCategories = await getCategoriesForJob(id);
 
   return (
     <main className="flex flex-1 flex-col px-6 py-16 sm:py-20">
@@ -60,7 +63,7 @@ export default async function EditJobPage({
               defaultValues={{
                 title: job.title,
                 description: job.description,
-                category: job.category,
+                categories: jobCategories,
                 location: job.location,
                 jobDate: job.jobDate,
               }}
