@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const links = [
@@ -16,7 +17,16 @@ export default function Nav() {
 
   return (
     <header className="border-b border-gold/40 px-6 py-4">
-      <nav className="flex flex-wrap justify-center gap-6 sm:gap-10">
+      <nav className="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
+        <Link href="/" aria-label="C.M. Beach Sitework home">
+          <Image
+            src="/CMBeachlogo.png"
+            alt="C.M. Beach Sitework"
+            width={400}
+            height={300}
+            className="h-14 w-auto"
+          />
+        </Link>
         {links.map((link) => {
           const active = pathname === link.href;
           return (

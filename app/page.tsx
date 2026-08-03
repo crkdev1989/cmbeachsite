@@ -126,12 +126,20 @@ export default function Home() {
         <h2 className="font-heading text-2xl font-bold uppercase tracking-wide text-foreground sm:text-3xl">
           Get an estimate.
         </h2>
-        <a
-          href="tel:302-228-8789"
-          className="mt-6 inline-block border-2 border-foreground bg-foreground px-8 py-3 font-heading text-lg font-bold uppercase tracking-wide text-gold transition-colors hover:bg-transparent hover:text-foreground"
-        >
-          Call 302-228-8789
-        </a>
+        <div className="mt-6 flex flex-col justify-center gap-4 sm:flex-row">
+          <a
+            href="tel:302-228-8789"
+            className="inline-block border-2 border-foreground bg-foreground px-8 py-3 font-heading text-lg font-bold uppercase tracking-wide text-gold transition-colors hover:bg-transparent hover:text-foreground"
+          >
+            Call 302-228-8789
+          </a>
+          <a
+            href="mailto:samantha@cmbeach.com"
+            className="inline-block border-2 border-foreground bg-foreground px-8 py-3 font-heading text-lg font-bold uppercase tracking-wide text-gold transition-colors hover:bg-transparent hover:text-foreground"
+          >
+            Email Us
+          </a>
+        </div>
       </section>
     </main>
   );
