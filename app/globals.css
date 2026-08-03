@@ -8,6 +8,7 @@
   --foreground: #0a0a0a;
   --gold: #d4a017;
   --sage: #6b7355;
+  --slate: #3d4147;
 }
 
 @theme inline {
@@ -15,6 +16,7 @@
   --color-foreground: var(--foreground);
   --color-gold: var(--gold);
   --color-sage: var(--sage);
+  --color-slate: var(--slate);
   --font-sans: var(--font-inter);
   --font-heading: var(--font-oswald);
 }

@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="border-t border-gold px-6 py-8 text-center text-sm text-foreground/70">
+    <footer className="border-t border-gold bg-slate px-6 py-8 text-center text-sm text-[#F5F2E8]/80">
       <p>&copy; 2026 C.M. Beach Sitework &middot; All Rights Reserved</p>
       <p className="mt-2">
         Built by{" "}
