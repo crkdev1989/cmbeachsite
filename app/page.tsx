@@ -81,7 +81,7 @@ export default function Home() {
           {photos.map((label, i) => (
             <div
               key={label}
-              className={`flex aspect-video items-center justify-center border-foreground/10 bg-foreground/10 text-xs font-semibold uppercase tracking-widest text-foreground/60 sm:text-sm ${
+              className={`flex aspect-video items-center justify-center border-foreground/10 text-xs font-semibold uppercase tracking-widest text-foreground/60 sm:text-sm ${
                 i > 0 ? "border-t sm:border-t-0 sm:border-l" : ""
               }`}
             >
@@ -101,7 +101,7 @@ export default function Home() {
             {services.map((service) => (
               <div
                 key={service.title}
-                className="border border-foreground/15 border-l-4 border-l-gold p-6 transition-colors hover:border-foreground/30 hover:border-l-gold"
+                className="border-[3px] border-foreground/15 border-l-[3px] border-l-gold bg-[#F5F2E8]/75 p-6 transition-colors hover:border-foreground/30 hover:border-l-gold"
               >
                 <h3 className="font-heading text-xl font-bold uppercase tracking-wide">
                   {service.title}
