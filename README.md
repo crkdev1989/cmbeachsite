@@ -20,6 +20,36 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Admin setup (auth, database, storage)
+
+The `/admin` area (job/media management, not built yet — this is just the
+foundation) is backed by Postgres (via Drizzle ORM), Cloudflare R2 for file
+storage, and Auth.js credentials login. None of this is configured out of
+the box; you need to do the following once:
+
+1. **Create a Postgres database.** Any standard Postgres works (Neon,
+   Supabase, Vercel Postgres, self-hosted, etc.) — the code only uses a
+   plain connection string, no provider-specific client. Copy `.env.example`
+   to `.env` and set `DATABASE_URL`.
+2. **Create a Cloudflare R2 bucket** and an API token (R2 → Manage API
+   Tokens) with read/write access to that bucket. Fill in `R2_ACCOUNT_ID`,
+   `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, and `R2_BUCKET_NAME` in
+   `.env`. `R2_PUBLIC_URL` can wait until the bucket is set up to serve
+   files publicly (its r2.dev URL or a custom domain).
+3. **Generate an auth secret:** `npx auth secret` (or any random 32+ byte
+   value) and set it as `AUTH_SECRET` in `.env`.
+4. **Create the database tables:** `npm run db:migrate`.
+5. **Create your login:** `npm run create-admin` — you'll be prompted for
+   name, email, and password interactively. Nothing is hardcoded in the
+   repo; the password is hashed with bcrypt before it touches the database.
+
+After that, `/admin/login` will authenticate against that account and
+`/admin` requires a signed-in session (unauthenticated visits redirect to
+the login page). Whichever host runs this app in production needs the same
+four env vars (`DATABASE_URL`, `AUTH_SECRET`, and the `R2_*` vars) set in
+its environment — none of them are Vercel-specific, so moving hosts later
+is just re-pointing these values.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
