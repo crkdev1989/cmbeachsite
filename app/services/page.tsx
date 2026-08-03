@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Services | C.M. Beach Sitework",
+  title:
+    "Services | C.M. Beach Sitework — Mass Grading, Utilities, Demolition & More",
   description:
     "Mass grading, fine grading, site utilities, demolition, clean up, and snow removal across Delaware and Maryland's Eastern Shore.",
 };

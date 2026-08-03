@@ -27,6 +27,14 @@ export async function submitContact(
   _prevState: ContactFormState,
   formData: FormData,
 ): Promise<ContactFormState> {
+  // Honeypot: real users never see or fill this field (see ContactForm).
+  // A bot that blindly fills every input trips it — pretend success so it
+  // doesn't learn the field is a trap, but skip saving/emailing entirely.
+  const honeypot = formData.get("website");
+  if (typeof honeypot === "string" && honeypot.trim()) {
+    return { status: "success" };
+  }
+
   const name = formData.get("name");
   const phone = formData.get("phone");
   const email = formData.get("email");

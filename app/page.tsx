@@ -1,4 +1,12 @@
+import type { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title:
+    "C.M. Beach Sitework | Site Work & Excavation, Delaware & Maryland's Eastern Shore",
+  description:
+    "C.M. Beach Sitework provides mass grading, fine grading, site utilities, demolition, clean up, and snow removal across Delaware and Maryland's Eastern Shore.",
+};
 
 const badges = [
   "Licensed & Insured",

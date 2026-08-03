@@ -96,6 +96,21 @@ export default function ContactForm() {
         <textarea name="message" required rows={5} className={fieldClasses} />
       </label>
 
+      {/* Honeypot: off-screen (not display:none/visibility:hidden, which
+          bots check for) rather than truly hidden, so it stays invisible to
+          people but still "fillable" to bots that blindly complete every
+          field. Real users never see or reach it; see submitContact. */}
+      <div className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden">
+        <label htmlFor="website">Leave this field blank</label>
+        <input
+          type="text"
+          id="website"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
       {state.status === "error" && state.message && (
         <p
           className="text-sm font-semibold text-red-800 sm:col-span-2"

@@ -9,7 +9,7 @@ import CategoryBadge from "@/components/CategoryBadge";
 import VideoPlaceholderIcon from "@/components/VideoPlaceholderIcon";
 
 export const metadata: Metadata = {
-  title: "Gallery | C.M. Beach Sitework",
+  title: "Project Gallery | C.M. Beach Sitework",
   description:
     "Photos and video from C.M. Beach Sitework projects across Delaware and Maryland's Eastern Shore.",
 };
