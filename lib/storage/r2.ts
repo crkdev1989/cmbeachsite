@@ -36,6 +36,14 @@ function getClient(): { client: S3Client; bucket: string } {
     region: "auto",
     endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
     credentials: { accessKeyId, secretAccessKey },
+    // AWS SDK v3 defaults to WHEN_SUPPORTED, which adds an
+    // x-amz-checksum-crc32 param to presigned PUT URLs. R2 doesn't fully
+    // support that param on presigned requests and rejects the signature
+    // with a 400 — which the browser then reports as an opaque CORS error
+    // (400 responses don't carry CORS headers), even though CORS itself is
+    // configured correctly on the bucket. WHEN_REQUIRED opts back out to
+    // the pre-checksum behavior that R2 signing actually supports.
+    requestChecksumCalculation: "WHEN_REQUIRED",
   });
   cachedBucket = bucketName;
 
